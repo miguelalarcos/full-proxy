@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  proxy:
+    image: alarcos/
+    #restart: always
+    environment:
+      CERTBOT_EMAIL: "miguel.alarcos@gmail.com"
+    ports:
+      - "80:80"
+      - "443:443"
+  api:
+    image: alarcos/
+    ports: 
+      - "3000:3000"
+    stdin_open: true
+    tty: true
