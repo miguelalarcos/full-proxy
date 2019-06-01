@@ -2,16 +2,13 @@ version: '3'
 
 services:
   proxy:
-    image: alarcos/
-    #restart: always
+    image: alarcos/full-proxy      
     environment:
       CERTBOT_EMAIL: "miguel.alarcos@gmail.com"
     ports:
       - "80:80"
       - "443:443"
   api:
-    image: alarcos/
+    image: alarcos/api-for-full-proxy
     ports: 
       - "3000:3000"
-    stdin_open: true
-    tty: true

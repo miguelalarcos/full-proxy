@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  vue_dev:
+    build:
+      context: ./app
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./app:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3000:8080
+      # - 9229:9229
+  db:
+    image: mongo
+  api:
+    build:
+      context: ./api
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./api:/usr/src/app
+      - /usr/src/app/node_modules
+    command: nodemon index.js
+  test_api:
+    build:
+      context: ./api
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./api:/usr/src/app
+      - /usr/src/app/node_modules
+    command: jest -i --watchAll
+  
