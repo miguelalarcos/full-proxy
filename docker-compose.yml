@@ -10,5 +10,13 @@ services:
       - "443:443"
   api:
     image: alarcos/api-for-full-proxy
+    environment:
+      - DB_NAME=production
     ports: 
       - "3000:3000"
+    depends_on:
+      - db
+  db:
+    image: mongo
+    volumes:
+      - ./data:/data/db
