@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  vue_dev:
+    build:
+      context: ./full-proxy
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./full-proxy:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 8080:8080
+      - 9229:9229
+  db:
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - 27017:27017
+  api:
+    build:
+      context: ./api
+      dockerfile: dev.Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=test
+    volumes:
+      - ./api:/usr/src/app
+      - /usr/src/app/node_modules
+    command: nodemon index.js
+  test_api:
+    build:
+      context: ./api
+      dockerfile: dev.Dockerfile
+    environment:
+      - DB_NAME=test
+    depends_on:
+      - api
+    volumes:
+      - ./api:/usr/src/app
+      - /usr/src/app/node_modules
+    command: jest -i --watchAll 
+    #command: ["wait-for-apì.sh", "api:3000", "---", "jest", "-i", "--watchAll"] 
+  
